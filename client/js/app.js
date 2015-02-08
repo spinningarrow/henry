@@ -3,6 +3,7 @@ var React = require('react');
 var qwest = require('qwest');
 var marked = require('marked');
 var yaml = require('js-yaml');
+var moment = require('moment');
 
 // var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts';
 var url = 'temp-posts.json';
@@ -38,7 +39,7 @@ var PostBox = React.createClass({
 
 				Promise.all(fullPostPromises)
 					.then(function (fullPosts) {
-						this.setState({ data: fullPosts, loading: false });
+						this.setState({ data: fullPosts.reverse(), loading: false });
 					}.bind(this));
 			}.bind(this));
 	},
@@ -68,14 +69,14 @@ var PostList = React.createClass({
 
 var Post = React.createClass({
 	getPostMeta: function () {
-		return parsePost(atob(this.props.content)).meta;
+		return parsePost(decodeURIComponent(escape(atob(this.props.content)))).meta;
 	},
 
 	render: function () {
 		return (
 			<div className="post">
 				<h2>{this.getPostMeta().title}</h2>
-				<time>{this.getPostMeta().date.toDateString()}</time>
+				<time>{this.getPostMeta().date && moment(this.getPostMeta().date).fromNow()}</time>
 			</div>
 		);
 	}
