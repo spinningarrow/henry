@@ -1,0 +1,25 @@
+{
+  "name": "henry",
+  "version": "0.0.1",
+  "description": "Front-end for Jekyll blogs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sahil Bajaj",
+  "license": "MIT",
+  "browserify": {
+    "transform": [
+      ["reactify"]
+    ]
+  },
+  "dependencies": {
+    "qwest": "^1.5.4",
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "browserify": "^8.1.3",
+    "reactify": "^1.0.0",
+    "watchify": "^2.3.0"
+  }
+}
