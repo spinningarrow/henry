@@ -1,3 +1,4 @@
+require('normalize-css');
 var React = require('react');
 var qwest = require('qwest')
 
