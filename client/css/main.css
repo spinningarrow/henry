@@ -60,6 +60,9 @@ main {
 .post-list .post h2 {
 	font-size: 1em;
 	margin: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .post-list .post time {
