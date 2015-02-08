@@ -50,7 +50,7 @@ var PostList = React.createClass({
 	render: function () {
 		var nodes = this.props.posts.map(function (post) {
 			return (
-				<li key={post.name}><Post title={post.name} content={post.content} /></li>
+				<li><Post title={post.name} content={post.content} /></li>
 			);
 		});
 
@@ -69,12 +69,7 @@ var Post = React.createClass({
 		return (
 			<div className="post">
 				<h2>{this.getPostMeta().title}</h2>
-				<p>Published: <time>{this.getPostMeta().date.toISOString()}</time></p>
-				<p>Labels</p>
-				<ul>
-					<li>Label 1</li>
-					<li>Label 2</li>
-				</ul>
+				<time>{this.getPostMeta().date.toDateString()}</time>
 			</div>
 		);
 	}
