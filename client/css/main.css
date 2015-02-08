@@ -33,7 +33,13 @@ main {
 }
 
 .post-box {
+	line-height: 1.2;
 	width: 20em;
+}
+
+.post-box.is-loading {
+	color: #f0f0f0;
+	font-family: 'blokk';
 }
 
 .post-list {

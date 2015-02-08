@@ -18,7 +18,13 @@ var parsePost = function (postContent) {
 
 var PostBox = React.createClass({
 	getInitialState: function () {
-		return { data: [] };
+		// return { data: [] };
+		var samplePost = {
+			'name': 'something',
+			'content': btoa('---\ntitle: SamplePost\ndate: ' + new Date().toISOString() + '\n---')
+		};
+
+		return { data: Array.apply(null, Array(20)).map(function () { return samplePost; }), loading: true };
 	},
 
 	componentDidMount: function () {
@@ -32,14 +38,14 @@ var PostBox = React.createClass({
 
 				Promise.all(fullPostPromises)
 					.then(function (fullPosts) {
-						this.setState({ data: fullPosts });
+						this.setState({ data: fullPosts, loading: false });
 					}.bind(this));
 			}.bind(this));
 	},
 
 	render: function () {
 		return (
-			<div className='post-box'>
+			<div className={this.state.loading ? 'post-box is-loading' : 'post-box'}>
 				<PostList posts={this.state.data}/>
 			</div>
 		);
