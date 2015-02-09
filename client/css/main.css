@@ -62,6 +62,7 @@ main {
 
 .post-list .post time {
 	color: #999;
+	font-size: 0.8em;
 }
 
 .is-loading * {
