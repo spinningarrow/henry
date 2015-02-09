@@ -5,8 +5,8 @@ var qwest = require('qwest');
 var yaml = require('js-yaml');
 var marked = require('marked');
 
-// var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts';
-var url = 'temp-posts.json';
+var ACCESS_TOKEN = '';
+var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts?access_token=' + ACCESS_TOKEN;
 
 var decodePostContent = function (post) {
 	// atob: to convert Base64 to human-readable stuff
@@ -49,20 +49,38 @@ var PostBox = React.createClass({
 		qwest.get(url)
 			.then(JSON.parse)
 			.then(function (posts) {
-				var fullPostPromises = posts.map(function (post) {
-					// return qwest.get(post.url);
-					return qwest.get('temp-post-hny.json').then(JSON.parse)
-						.then(decodePostContent)
-						.then(parsePostContent);
-				});
+				posts.length = 15;
 
-				Promise.all(fullPostPromises)
-					.then(function (fullPosts) {
-						this.setState({
-							data: fullPosts.reverse(),
-							isLoading: false
-						});
-					}.bind(this));
+				var fullPostPromises = posts.map(function (post) {
+					return qwest.get(post.url + '&access_token=' + ACCESS_TOKEN)
+					// return qwest.get('temp-post-hny.json')
+						.then(JSON.parse)
+						.then(decodePostContent)
+						.then(parsePostContent)
+						.then(function (post) {
+							var foundIndex;
+							var data = this.state.data;
+
+							posts.filter(function (p, index) {
+								return p.name === post.name && (foundIndex = index, true);
+							});
+
+							data[foundIndex] = post;
+
+							this.setState({
+								data: data,
+								isLoading: false
+							});
+						}.bind(this));
+				}.bind(this));
+
+				// Promise.all(fullPostPromises)
+				// 	.then(function (fullPosts) {
+				// 		this.setState({
+				// 			data: fullPosts.reverse(),
+				// 			isLoading: false
+				// 		});
+				// 	}.bind(this));
 			}.bind(this));
 	},
 
