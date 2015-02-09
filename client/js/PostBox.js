@@ -35,13 +35,13 @@ var PostBox = React.createClass({
 		return {
 			data: Array.apply(null, Array(samplePostsLength)).map(function () {
 				return {
+					isLoading: true,
 					name: 'some-sample-post' + count++,
 					title: 'SomeSamplePost',
 					date: new Date(),
 					body: 'Post body.'
 				};
-			}),
-			isLoading: true
+			})
 		};
 	},
 
@@ -61,6 +61,7 @@ var PostBox = React.createClass({
 							var foundIndex;
 							var data = this.state.data;
 
+							post.isLoading = false;
 							posts.filter(function (p, index) {
 								return p.name === post.name && (foundIndex = index, true);
 							});
@@ -68,25 +69,16 @@ var PostBox = React.createClass({
 							data[foundIndex] = post;
 
 							this.setState({
-								data: data,
-								isLoading: false
+								data: data
 							});
 						}.bind(this));
 				}.bind(this));
-
-				// Promise.all(fullPostPromises)
-				// 	.then(function (fullPosts) {
-				// 		this.setState({
-				// 			data: fullPosts.reverse(),
-				// 			isLoading: false
-				// 		});
-				// 	}.bind(this));
 			}.bind(this));
 	},
 
 	render: function () {
 		return (
-			<div className={this.state.isLoading ? 'post-box is-loading' : 'post-box'}>
+			<div className='post-box'>
 				<PostList posts={this.state.data}/>
 			</div>
 		);

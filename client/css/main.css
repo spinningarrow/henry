@@ -37,11 +37,6 @@ main {
 	width: 20em;
 }
 
-.post-box.is-loading {
-	color: #f0f0f0;
-	font-family: 'blokk';
-}
-
 .post-list {
 	list-style: none;
 	margin: 0;
@@ -66,4 +61,10 @@ main {
 }
 
 .post-list .post time {
+	color: #999;
+}
+
+.is-loading * {
+	color: #f0f0f0 !important;
+	font-family: 'blokk';
 }
