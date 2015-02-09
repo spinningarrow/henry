@@ -2,15 +2,27 @@ var React = require('react');
 var Post = require('./Post');
 var PostList = require('./PostList');
 var qwest = require('qwest');
+var yaml = require('js-yaml');
+var marked = require('marked');
 
 // var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts';
 var url = 'temp-posts.json';
+
+var parsePost = function (postContent) {
+	var frontMatterEndIndex = postContent.lastIndexOf('---') + 3;
+
+	return {
+		meta: yaml.safeLoad(postContent.substring(3, frontMatterEndIndex - 3)),
+		body: marked(postContent.substring(frontMatterEndIndex))
+	};
+};
 
 var PostBox = React.createClass({
 	getInitialState: function () {
 		// return { data: [] };
 		var samplePost = {
 			'name': 'something',
+			'meta': JSON.stringify({ title: 'my title', date: new Date().toISOString() }),
 			'content': btoa('---\ntitle: SamplePost\ndate: ' + new Date().toISOString() + '\n---')
 		};
 
@@ -23,7 +35,12 @@ var PostBox = React.createClass({
 			.then(function (posts) {
 				var fullPostPromises = posts.map(function (post) {
 					// return qwest.get(post.url);
-					return qwest.get('temp-post-hny.json').then(JSON.parse);
+					return qwest.get('temp-post-hny.json').then(JSON.parse)
+						.then(function (post) {
+							post.content = decodeURIComponent(escape(atob(post.content)));
+							post.meta = parsePost(post.content).meta;
+							return post;
+						});
 				});
 
 				Promise.all(fullPostPromises)
