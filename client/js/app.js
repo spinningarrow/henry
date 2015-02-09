@@ -1,5 +1,5 @@
 require('normalize-css');
-React = require('react');
+var React = require('react');
 
 var Post = require('./Post');
 var PostList = require('./PostList');
