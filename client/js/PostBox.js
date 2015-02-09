@@ -29,14 +29,20 @@ var parsePostContent = function (post) {
 
 var PostBox = React.createClass({
 	getInitialState: function () {
-		// return { data: [] };
-		var samplePost = {
-			'name': 'something',
-			'meta': JSON.stringify({ title: 'my title', date: new Date().toISOString() }),
-			'content': btoa('---\ntitle: SamplePost\ndate: ' + new Date().toISOString() + '\n---')
-		};
+		var count = 0;
+		var samplePostsLength = 20;
 
-		return { data: Array.apply(null, Array(20)).map(function () { return samplePost; }), loading: true };
+		return {
+			data: Array.apply(null, Array(samplePostsLength)).map(function () {
+				return {
+					name: 'some-sample-post' + count++,
+					title: 'SomeSamplePost',
+					date: new Date(),
+					body: 'Post body.'
+				};
+			}),
+			isLoading: true
+		};
 	},
 
 	componentDidMount: function () {
@@ -52,14 +58,17 @@ var PostBox = React.createClass({
 
 				Promise.all(fullPostPromises)
 					.then(function (fullPosts) {
-						this.setState({ data: fullPosts.reverse(), loading: false });
+						this.setState({
+							data: fullPosts.reverse(),
+							isLoading: false
+						});
 					}.bind(this));
 			}.bind(this));
 	},
 
 	render: function () {
 		return (
-			<div className={this.state.loading ? 'post-box is-loading' : 'post-box'}>
+			<div className={this.state.isLoading ? 'post-box is-loading' : 'post-box'}>
 				<PostList posts={this.state.data}/>
 			</div>
 		);
