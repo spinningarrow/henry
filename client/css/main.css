@@ -3,7 +3,7 @@ body {
 }
 
 header {
-	padding: 0.5em;
+	padding: 1em;
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -21,15 +21,15 @@ header h1 {
 footer {
 	bottom: 0;
 	line-height: 1;
-	padding: 0.5em;
+	padding: 1em;
 	position: fixed;
 }
 
 main {
-	bottom: 2em;
+	bottom: 3em;
 	overflow: auto;
 	position: fixed;
-	top: 2em;
+	top: 3em;
 }
 
 .post-box {
