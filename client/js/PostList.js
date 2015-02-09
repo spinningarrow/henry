@@ -5,7 +5,7 @@ var PostList = React.createClass({
 	render: function () {
 		var nodes = this.props.posts.map(function (post) {
 			return (
-				<li><Post title={post.meta.title} date={post.meta.date} /></li>
+				<li><Post title={post.title} date={post.date} /></li>
 			);
 		});
 

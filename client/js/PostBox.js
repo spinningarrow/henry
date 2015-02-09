@@ -8,13 +8,23 @@ var marked = require('marked');
 // var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts';
 var url = 'temp-posts.json';
 
-var parsePost = function (postContent) {
-	var frontMatterEndIndex = postContent.lastIndexOf('---') + 3;
+var decodePostContent = function (post) {
+	// atob: to convert Base64 to human-readable stuff
+	// escape + decodeURIComponent: for getting the UTF-8 characters right
+	post.content = decodeURIComponent(escape(atob(post.content)));
 
-	return {
-		meta: yaml.safeLoad(postContent.substring(3, frontMatterEndIndex - 3)),
-		body: marked(postContent.substring(frontMatterEndIndex))
-	};
+	return post;
+};
+
+var parsePostContent = function (post) {
+	var matches = post.content.match(/---((?:\n|.)+)---((?:\n|.)+)/);
+	var yamlFrontMatter = matches && yaml.safeLoad(matches[1].trim());
+
+	post.title = yamlFrontMatter.title;
+	post.date =  yamlFrontMatter.date;
+	post.body = matches && marked(matches[2].trim());
+
+	return post;
 };
 
 var PostBox = React.createClass({
@@ -36,11 +46,8 @@ var PostBox = React.createClass({
 				var fullPostPromises = posts.map(function (post) {
 					// return qwest.get(post.url);
 					return qwest.get('temp-post-hny.json').then(JSON.parse)
-						.then(function (post) {
-							post.content = decodeURIComponent(escape(atob(post.content)));
-							post.meta = parsePost(post.content).meta;
-							return post;
-						});
+						.then(decodePostContent)
+						.then(parsePostContent);
 				});
 
 				Promise.all(fullPostPromises)
