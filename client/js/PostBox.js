@@ -1,5 +1,6 @@
-var React = require('react');
+// var React = require('react');
 var Post = require('./Post');
+var PostList = require('./PostList');
 var qwest = require('qwest');
 
 // var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts';
@@ -37,20 +38,6 @@ var PostBox = React.createClass({
 			<div className={this.state.loading ? 'post-box is-loading' : 'post-box'}>
 				<PostList posts={this.state.data}/>
 			</div>
-		);
-	}
-});
-
-var PostList = React.createClass({
-	render: function () {
-		var nodes = this.props.posts.map(function (post) {
-			return (
-				<li><Post title={post.name} content={post.content} /></li>
-			);
-		});
-
-		return (
-			<ul className="post-list">{nodes}</ul>
 		);
 	}
 });

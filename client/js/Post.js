@@ -1,4 +1,4 @@
-var React = require('react');
+// var React = require('react');
 var yaml = require('js-yaml');
 var marked = require('marked');
 var moment = require('moment');
