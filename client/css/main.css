@@ -25,21 +25,31 @@ footer {
 	position: fixed;
 }
 
+aside {
+	bottom: 3em;
+	line-height: 1.2;
+	overflow: auto;
+	position: fixed;
+	top: 3em;
+	width: 20em;
+}
+
 main {
 	bottom: 3em;
-	overflow: auto;
+	/* overflow: auto; */
+	left: 20em;
 	position: fixed;
 	top: 3em;
 }
 
 main > div {
-	display: inline-block;
-	vertical-align: top;
+	/* display: inline-block; */
+	/* vertical-align: top; */
 }
 
 .post-box {
-	line-height: 1.2;
-	width: 20em;
+	/* line-height: 1.2; */
+	/* width: 20em; */
 }
 
 .post-list {
