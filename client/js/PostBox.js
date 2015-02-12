@@ -45,12 +45,14 @@ var batchRequests = function (posts, startIndex, batchSize) {
 	batchSize = batchSize || 5;
 	startIndex = startIndex || 0;
 
-	// simple case, start from beginning and fetch 5 posts
+	// simple case, start from beginning and fetch <batchSize> number of posts
 	var postsToFetch = posts.slice(startIndex, startIndex + batchSize);
 	return fetchPostContent(postsToFetch);
 };
 
 var PostBox = React.createClass({
+	postsBatchSize: 10,
+
 	getShallowPosts: function () {
 		return qwest.get(url)
 			.then(JSON.parse)
@@ -61,13 +63,13 @@ var PostBox = React.createClass({
 
 	getFullPosts: function () {
 		this.postsFetched = this.postsFetched || 0;
-		var contentPromises = batchRequests(this._posts, this.postsFetched);
+		var contentPromises = batchRequests(this._posts, this.postsFetched, this.postsBatchSize);
 
 		contentPromises.map(function (contentPromise, index) {
 			contentPromise.then(this.updateData);
 		}.bind(this));
 
-		this.postsFetched += 5;
+		this.postsFetched += this.postsBatchSize;
 	},
 
 	updateData: function (post) {
