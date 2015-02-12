@@ -50,8 +50,12 @@ var batchRequests = function (posts, startIndex, batchSize) {
 	return fetchPostContent(postsToFetch);
 };
 
+var hasReachedBottom = function (element) {
+	return element.scrollTop + element.offsetHeight >= element.scrollHeight;
+};
+
 var PostBox = React.createClass({
-	postsBatchSize: 10,
+	postsBatchSize: 15,
 
 	getShallowPosts: function () {
 		return qwest.get(url)
@@ -63,6 +67,13 @@ var PostBox = React.createClass({
 
 	getFullPosts: function () {
 		this.postsFetched = this.postsFetched || 0;
+
+		if (this.postsFetched >= this._posts.length) return;
+
+		if (this.postsFetched + this.postsBatchSize > this._posts.length) {
+			this.postsBatchSize = this._posts.length - this.postsFetched;
+		}
+
 		var contentPromises = batchRequests(this._posts, this.postsFetched, this.postsBatchSize);
 
 		contentPromises.map(function (contentPromise, index) {
@@ -87,22 +98,38 @@ var PostBox = React.createClass({
 		});
 	},
 
-	getInitialState: function () {
+	generateSamplePosts: function () {
 		var count = 0;
-		var samplePostsLength = 20;
 
+		return Array.apply(null, Array(this.postsBatchSize)).map(function () {
+			return {
+				isLoading: true,
+				name: 'some-sample-post' + count++,
+				title: 'SomeSamplePost',
+				date: new Date(),
+				body: 'Post body.'
+			};
+		});
+	},
+
+	handleScroll: function (event) {
+		if (hasReachedBottom(event.target)
+				&& this._posts
+				&& this.postsFetched < this._posts.length) {
+			console.log('Bottom reached!');
+			var data = this.state.data;
+
+			this.setState({
+				data: data.concat(this.generateSamplePosts())
+			});
+
+			this.getFullPosts();
+		}
+	},
+
+	getInitialState: function () {
 		return {
-			data: Array.apply(null, Array(samplePostsLength)).map(function () {
-				return {
-					isLoading: true,
-					name: 'some-sample-post' + count++,
-					title: 'SomeSamplePost',
-					date: new Date(),
-					body: 'Post body.'
-				};
-			}),
-			totalPosts: samplePostsLength,
-			numPostsFetched: samplePostsLength
+			data: this.generateSamplePosts()
 		};
 	},
 
@@ -113,9 +140,10 @@ var PostBox = React.createClass({
 	},
 
 	render: function () {
+		// hax
+		document.querySelector('aside').addEventListener('scroll', this.handleScroll);
 		return (
 			<div className='post-box'>
-				<div><a href="#" onClick={this.getFullPosts}>More</a></div>
 				<PostList posts={this.state.data}/>
 			</div>
 		);
