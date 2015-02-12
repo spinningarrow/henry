@@ -27,6 +27,29 @@ var parsePostContent = function (post) {
 	return post;
 };
 
+// Gets the content for the provided list of (shallow) post objects
+// Returns a list of promises for this operation
+var fetchPostContent = function (posts) {
+	return posts.map(function (post) {
+		return qwest.get(post.url + '&access_token=' + ACCESS_TOKEN)
+			.then(JSON.parse)
+			.then(decodePostContent)
+			.then(parsePostContent);
+	});
+};
+
+// Takes in a list of all posts (shallow/full)
+// Returns a list of posts which have content
+// List returned increases in size with every request until all posts have been fetched
+var batchRequests = function (posts, startIndex, batchSize) {
+	batchSize = batchSize || 5;
+	startIndex = startIndex || 0;
+
+	// simple case, start from beginning and fetch 5 posts
+	var postsToFetch = posts.slice(startIndex, startIndex + batchSize);
+	return fetchPostContent(postsToFetch);
+};
+
 var PostBox = React.createClass({
 	getInitialState: function () {
 		var count = 0;
@@ -41,44 +64,87 @@ var PostBox = React.createClass({
 					date: new Date(),
 					body: 'Post body.'
 				};
-			})
+			}),
+			totalPosts: samplePostsLength,
+			numPostsFetched: samplePostsLength
 		};
 	},
 
-	componentDidMount: function () {
-		qwest.get(url)
+	getPosts: function () {
+		// this should go in the `then` above
+		this.postsFetched = 0 + 5;
+
+		return qwest.get(url)
 			.then(JSON.parse)
 			.then(function (posts) {
-				posts.length = 15;
+				this._posts = posts;
+				return batchRequests(posts, 0);
+			}.bind(this));
+	},
 
-				var fullPostPromises = posts.map(function (post) {
-					return qwest.get(post.url + '&access_token=' + ACCESS_TOKEN)
-					// return qwest.get('temp-post-hny.json')
-						.then(JSON.parse)
-						.then(decodePostContent)
-						.then(parsePostContent)
-						.then(function (post) {
-							var foundIndex;
-							var data = this.state.data;
+	updateData: function (contentPromises) {
+		var offset = this.postsFetched;
 
-							post.isLoading = false;
-							posts.filter(function (p, index) {
-								return p.name === post.name && (foundIndex = index, true);
-							});
+		contentPromises.map(function (contentPromise, index) {
+			contentPromise.then(function (post) {
+				this.postsFetched++;
 
-							data[foundIndex] = post;
+				var foundIndex;
+				var data = this.state.data;
 
-							this.setState({
-								data: data
-							});
-						}.bind(this));
+				post.isLoading = false;
+				data[offset + index] = post;
+
+				this.setState({
+					data: data
+				});
+			}.bind(this));
+		}.bind(this));
+	},
+
+	getMorePosts: function () {
+		var contentPromises = batchRequests(this._posts, this.postsFetched);
+		this.updateData(contentPromises);
+		return;
+		contentPromises.map(function (contentPromise, index) {
+			contentPromise.then(function (post) {
+				var foundIndex;
+				var data = this.state.data;
+
+				post.isLoading = false;
+				data[this.postsFetched + index] = post;
+
+				this.setState({
+					data: data
+				});
+			}.bind(this));
+		}.bind(this));
+
+		this.postsFetched += 5;
+	},
+
+	componentDidMount: function () {
+		this.getPosts().then(function (contentPromises) {
+			contentPromises.map(function (contentPromise, index) {
+				contentPromise.then(function (post) {
+					var foundIndex;
+					var data = this.state.data;
+
+					post.isLoading = false;
+					data[index] = post;
+
+					this.setState({
+						data: data
+					});
 				}.bind(this));
 			}.bind(this));
+		}.bind(this));
 	},
 
 	render: function () {
 		return (
 			<div className='post-box'>
+				<div><a href="#" onClick={this.getMorePosts}>More</a></div>
 				<PostList posts={this.state.data}/>
 			</div>
 		);
