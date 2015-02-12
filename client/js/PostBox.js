@@ -136,6 +136,7 @@ var PostBox = React.createClass({
 	componentDidMount: function () {
 		this.getShallowPosts().then(function () {
 			this.getFullPosts();
+			setTimeout(this.getFullPosts, 5000);
 		}.bind(this));
 	},
 
