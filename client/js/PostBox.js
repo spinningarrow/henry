@@ -51,6 +51,40 @@ var batchRequests = function (posts, startIndex, batchSize) {
 };
 
 var PostBox = React.createClass({
+	getShallowPosts: function () {
+		return qwest.get(url)
+			.then(JSON.parse)
+			.then(function (posts) {
+				this._posts = posts;
+			}.bind(this));
+	},
+
+	getFullPosts: function () {
+		this.postsFetched = this.postsFetched || 0;
+		var contentPromises = batchRequests(this._posts, this.postsFetched);
+
+		contentPromises.map(function (contentPromise, index) {
+			contentPromise.then(this.updateData);
+		}.bind(this));
+
+		this.postsFetched += 5;
+	},
+
+	updateData: function (post) {
+		var data = this.state.data;
+		var foundIndex;
+
+		this._posts.filter(function (p, index) {
+			return p.name === post.name && (foundIndex = index, true);
+		});
+		post.isLoading = false;
+		data[foundIndex] = post;
+
+		this.setState({
+			data: data
+		});
+	},
+
 	getInitialState: function () {
 		var count = 0;
 		var samplePostsLength = 20;
@@ -70,81 +104,16 @@ var PostBox = React.createClass({
 		};
 	},
 
-	getPosts: function () {
-		// this should go in the `then` above
-		this.postsFetched = 0 + 5;
-
-		return qwest.get(url)
-			.then(JSON.parse)
-			.then(function (posts) {
-				this._posts = posts;
-				return batchRequests(posts, 0);
-			}.bind(this));
-	},
-
-	updateData: function (contentPromises) {
-		var offset = this.postsFetched;
-
-		contentPromises.map(function (contentPromise, index) {
-			contentPromise.then(function (post) {
-				this.postsFetched++;
-
-				var foundIndex;
-				var data = this.state.data;
-
-				post.isLoading = false;
-				data[offset + index] = post;
-
-				this.setState({
-					data: data
-				});
-			}.bind(this));
-		}.bind(this));
-	},
-
-	getMorePosts: function () {
-		var contentPromises = batchRequests(this._posts, this.postsFetched);
-		this.updateData(contentPromises);
-		return;
-		contentPromises.map(function (contentPromise, index) {
-			contentPromise.then(function (post) {
-				var foundIndex;
-				var data = this.state.data;
-
-				post.isLoading = false;
-				data[this.postsFetched + index] = post;
-
-				this.setState({
-					data: data
-				});
-			}.bind(this));
-		}.bind(this));
-
-		this.postsFetched += 5;
-	},
-
 	componentDidMount: function () {
-		this.getPosts().then(function (contentPromises) {
-			contentPromises.map(function (contentPromise, index) {
-				contentPromise.then(function (post) {
-					var foundIndex;
-					var data = this.state.data;
-
-					post.isLoading = false;
-					data[index] = post;
-
-					this.setState({
-						data: data
-					});
-				}.bind(this));
-			}.bind(this));
+		this.getShallowPosts().then(function () {
+			this.getFullPosts();
 		}.bind(this));
 	},
 
 	render: function () {
 		return (
 			<div className='post-box'>
-				<div><a href="#" onClick={this.getMorePosts}>More</a></div>
+				<div><a href="#" onClick={this.getFullPosts}>More</a></div>
 				<PostList posts={this.state.data}/>
 			</div>
 		);
