@@ -23,7 +23,7 @@ var parsePostContent = function (post) {
 
 	post.title = yamlFrontMatter.title;
 	post.date =  yamlFrontMatter.date;
-	post.body = matches && marked(matches[2].trim());
+	post.body = matches && /*marked(*/matches[2].trim()/*)*/;
 
 	return post;
 };
