@@ -141,6 +141,24 @@ var PostBox = React.createClass({
 		});
 	},
 
+	handleTitleChanged: function (event) {
+		var selectedPost = this.state.selectedPost;
+		selectedPost.title = event.target.value;
+
+		this.setState({
+			selectedPost: selectedPost
+		});
+	},
+
+	handleBodyChanged: function (event) {
+		var selectedPost = this.state.selectedPost;
+		selectedPost.body = event.target.value;
+
+		this.setState({
+			selectedPost: selectedPost
+		});
+	},
+
 	getInitialState: function () {
 		return {
 			data: this.generateSamplePosts()
@@ -160,7 +178,7 @@ var PostBox = React.createClass({
 		return (
 			<div className="post-box">
 				<PostList posts={this.state.data} handlePostClicked={this.handlePostClicked}/>
-				<PostEditor post={this.state.selectedPost}/>
+				<PostEditor post={this.state.selectedPost} handleTitleChanged={this.handleTitleChanged} handleBodyChanged={this.handleBodyChanged}/>
 			</div>
 		);
 	}

@@ -1,9 +1,6 @@
 var React = require('react');
 
 var PostEditor = React.createClass({
-	handleChange: function (event) {
-	},
-
 	render: function () {
 		return (
 			<div id="post-editor">
@@ -12,10 +9,10 @@ var PostEditor = React.createClass({
 						className="text-editor-title"
 						placeholder="Title"
 						value={this.props.post && this.props.post.title}
-						onChange={this.handleChange}/>
+						onChange={this.props.handleTitleChanged}/>
 					<textarea className="text-editor"
-						value={this.props.post && this.props.post.content}
-						onChange={this.handleChange}></textarea>
+						value={this.props.post && this.props.post.body}
+						onChange={this.props.handleBodyChanged}></textarea>
 				</form>
 			</div>
 		);
