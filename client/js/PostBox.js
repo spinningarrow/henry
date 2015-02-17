@@ -62,7 +62,7 @@ var PostBox = React.createClass({
 		return qwest.get(url)
 			.then(JSON.parse)
 			.then(function (posts) {
-				this._posts = posts;
+				this._posts = posts.reverse();
 			}.bind(this));
 	},
 
