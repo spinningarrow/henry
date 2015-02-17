@@ -4,29 +4,27 @@ body {
 }
 
 header > *, footer > * {
-	font-size: 1rem;
-	line-height: 1;
-	margin: 1rem;
+	line-height: 3rem;
+	margin: 0 1rem;
+}
+
+header {
+	position: fixed;
+	top: 0;
 }
 
 header h1 {
 	color: #ccc;
+	font-size: 1rem;
 	font-weight: 900;
 	text-transform: uppercase;
 }
 
-header {
-	height: 3rem;
-	position: fixed;
-	overflow: hidden;
-	top: 0;
-}
-
 footer {
 	bottom: 0;
-	height: 3rem;
+	color: #ccc;
+	font-size: 0.8rem;
 	position: fixed;
-	overflow: hidden;
 }
 
 main {
