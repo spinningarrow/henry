@@ -1,0 +1,56 @@
+body {
+	color: #444;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+header > *, footer > * {
+	font-size: 1rem;
+	line-height: 1;
+	margin: 1rem;
+}
+
+header h1 {
+	color: #ccc;
+	font-weight: 900;
+	text-transform: uppercase;
+}
+
+header {
+	height: 3rem;
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+}
+
+footer {
+	bottom: 0;
+	height: 3rem;
+	position: fixed;
+	overflow: hidden;
+}
+
+main {
+	bottom: 3rem;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 3rem;
+}
+
+#post-list {
+	bottom: 0;
+	left: 0;
+	overflow: auto;
+	position: absolute;
+	top: 0;
+	width: 30%;
+}
+
+#post-editor {
+	box-sizing: border-box;
+	padding-left: 1rem;
+	position: absolute;
+	right: 0;
+	width: 70%;
+}
+

@@ -11,7 +11,6 @@ var PostEditor = React.createClass({
 					<textarea></textarea>
 				</div>
 				<div>
-					<button type="submit">Publish</button>
 				</div>
 			</div>
 		);

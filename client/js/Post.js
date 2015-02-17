@@ -7,7 +7,7 @@ var Post = React.createClass({
 		return (
 			<div className="post">
 				<h2>{this.props.title}</h2>
-				<time>{moment(this.props.date).fromNow()}</time>
+				<span className="meta"><time>{moment(this.props.date).fromNow()}</time></span>
 			</div>
 		);
 	}

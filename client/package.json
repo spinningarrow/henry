@@ -4,7 +4,8 @@
   "description": "Front-end for Jekyll blogs",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify -vo build/js/app.js js/app.js",
+    "watch:css": "watch 'cat css/base.css css/components.css css/state.css > build/css/main.css' css/",
+    "watch:js": "watchify -vo build/js/app.js js/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sahil Bajaj",
