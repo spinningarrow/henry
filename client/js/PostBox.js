@@ -88,8 +88,8 @@ var PostBox = React.createClass({
 		var data = this.state.data;
 		var foundIndex;
 
-		this._posts.filter(function (p, index) {
-			return p.name === post.name && (foundIndex = index, true);
+		this._posts.some(function (p, index) {
+			return foundIndex = index, p.name === post.name;
 		});
 		post.isLoading = false;
 		data[foundIndex] = post;
@@ -128,6 +128,19 @@ var PostBox = React.createClass({
 		}
 	},
 
+	handlePostClicked: function (post, event) {
+		var foundPost = null;
+		this.state.data.some(function (p) {
+			return foundPost = p, p.name === post.name;
+		});
+
+		if (!foundPost) return;
+
+		this.setState({
+			selectedPost: foundPost
+		});
+	},
+
 	getInitialState: function () {
 		return {
 			data: this.generateSamplePosts()
@@ -146,8 +159,8 @@ var PostBox = React.createClass({
 		// document.querySelector('aside').addEventListener('scroll', this.handleScroll);
 		return (
 			<div className="post-box">
-				<PostList posts={this.state.data}/>
-				<PostEditor/>
+				<PostList posts={this.state.data} handlePostClicked={this.handlePostClicked}/>
+				<PostEditor post={this.state.selectedPost}/>
 			</div>
 		);
 	}
