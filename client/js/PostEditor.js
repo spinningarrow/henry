@@ -4,14 +4,10 @@ var PostEditor = React.createClass({
 	render: function () {
 		return (
 			<div id="post-editor">
-				<div>
-					<input type="text" value="This is a title" placeholder="title"/>
-				</div>
-				<div>
-					<textarea></textarea>
-				</div>
-				<div>
-				</div>
+				<form className="text-editor-form">
+					<input type="text" className="text-editor-title" defaultValue="This is a title" placeholder="title"/>
+					<textarea className="text-editor"></textarea>
+				</form>
 			</div>
 		);
 	}

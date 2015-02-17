@@ -29,13 +29,34 @@
 	line-height: 1rem;
 }
 
-button {
+/* button { */
+/* 	border: 0; */
+/* 	border-bottom: 2px solid #F38630; */
+/* 	background-color: #FA6900; */
+/* 	color: #FFF; */
+/* 	font-size: 0.8rem; */
+/* 	font-weight: 600; */
+/* 	padding: 0.5rem 1rem; */
+/* 	text-transform: uppercase; */
+/* } */
+
+.text-editor-form {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+.text-editor-title {
+	margin-bottom: 1rem;
+}
+
+.text-editor {
+	flex-grow: 1;
+}
+
+.text-editor-title,
+.text-editor {
+	background-color: #fafafa;
 	border: 0;
-	border-bottom: 2px solid #F38630;
-	background-color: #FA6900;
-	color: #FFF;
-	font-size: 0.8rem;
-	font-weight: 600;
-	padding: 0.5rem 1rem;
-	text-transform: uppercase;
+	padding: 1rem;
 }

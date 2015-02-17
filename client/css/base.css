@@ -47,10 +47,12 @@ main {
 }
 
 #post-editor {
+	bottom: 0;
 	box-sizing: border-box;
-	padding-left: 1rem;
+	padding: 0 1rem;
 	position: absolute;
 	right: 0;
+	top: 0;
 	width: 70%;
 }
 
