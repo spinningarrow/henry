@@ -6,5 +6,4 @@ var PostList = require('./PostList');
 var PostBox = require('./PostBox');
 var PostEditor = require('./PostEditor');
 
-React.render(<PostBox/>, document.querySelector('#posts'));
-React.render(<PostEditor/>, document.querySelector('#post-editor'));
+React.render(<PostBox/>, document.querySelector('main'));

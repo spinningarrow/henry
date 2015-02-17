@@ -10,7 +10,9 @@ var PostList = React.createClass({
 		});
 
 		return (
-			<ul className="post-list">{nodes}</ul>
+			<div id="post-list">
+				<ul className="list-boxes">{nodes}</ul>
+			</div>
 		);
 	}
 });

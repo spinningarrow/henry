@@ -1,6 +1,7 @@
 var React = require('react');
 var Post = require('./Post');
 var PostList = require('./PostList');
+var PostEditor = require('./PostEditor');
 var qwest = require('qwest');
 var yaml = require('js-yaml');
 var marked = require('marked');
@@ -142,10 +143,11 @@ var PostBox = React.createClass({
 
 	render: function () {
 		// hax
-		document.querySelector('aside').addEventListener('scroll', this.handleScroll);
+		// document.querySelector('aside').addEventListener('scroll', this.handleScroll);
 		return (
-			<div className='post-box'>
+			<div className="post-box">
 				<PostList posts={this.state.data}/>
+				<PostEditor/>
 			</div>
 		);
 	}
