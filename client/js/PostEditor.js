@@ -13,6 +13,9 @@ var PostEditor = React.createClass({
 					<textarea className="text-editor"
 						value={this.props.post && this.props.post.body}
 						onChange={this.props.handleBodyChanged}></textarea>
+					<div>
+						<button type="submit">Publish</button>
+					</div>
 				</form>
 			</div>
 		);

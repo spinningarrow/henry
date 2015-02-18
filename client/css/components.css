@@ -7,7 +7,7 @@
 .list-boxes > li {
 	border-top: 1px solid #eee;
 	cursor: pointer;
-	line-height: 1;
+	line-height: 1.2;
 	padding: 0.5rem 1rem;
 }
 
@@ -18,7 +18,6 @@
 .list-boxes > li h2 {
 	font-size: 1rem;
 	margin: 0;
-	line-height: 1rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -27,31 +26,36 @@
 .list-boxes > li .meta {
 	color: #999;
 	font-size: 0.8rem;
-	line-height: 1rem;
 }
 
-/* button { */
-/* 	border: 0; */
-/* 	border-bottom: 2px solid #F38630; */
-/* 	background-color: #FA6900; */
-/* 	color: #FFF; */
-/* 	font-size: 0.8rem; */
-/* 	font-weight: 600; */
-/* 	padding: 0.5rem 1rem; */
-/* 	text-transform: uppercase; */
-/* } */
+button,
+input,
+textarea {
+	background-color: #fafafa;
+	border: 0;
+	line-height: 1.4;
+	padding: 0.5rem 1rem;
+}
+
+button:focus,
+button:hover,
+input:focus,
+input:hover,
+textarea:focus,
+textarea:hover {
+	background-color: #f8f8f8;
+	outline: 0;
+}
 
 .text-editor-form {
 	display: flex;
 	height: 100%;
 	flex-direction: column;
-	font-family: source code pro;
 	font-size: 0.85rem;
 }
 
 .text-editor-title {
 	font-weight: bold;
-	margin-bottom: 1rem;
 }
 
 .text-editor {
@@ -60,8 +64,6 @@
 
 .text-editor-title,
 .text-editor {
-	background-color: #fafafa;
-	border: 0;
-	line-height: 1.4;
-	padding: 1rem;
+	font-family: source code pro;
+	margin-bottom: 0.5rem;
 }
