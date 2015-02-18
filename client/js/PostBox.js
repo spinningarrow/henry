@@ -17,12 +17,23 @@ var decodePostContent = function (post) {
 	return post;
 };
 
+var parsePostFilename = function (post) {
+	var matches = post.name.match(/(\d{4}-\d{2}-\d{2})-(.+)\.m\w+/);
+
+	return {
+		date: matches[1] && new Date(matches[1]),
+		title: matches[2] && matches[2].replace(/\b-\b/g, ' ').replace(/^(\w)/, function (match, firstLetter) {
+			return firstLetter.toLocaleUpperCase();
+		})
+	}
+};
+
 var parsePostContent = function (post) {
 	var matches = post.content.match(/---((?:\n|.)+)---((?:\n|.)+)/);
 	var yamlFrontMatter = matches && yaml.safeLoad(matches[1].trim());
 
-	post.title = yamlFrontMatter.title;
-	post.date =  yamlFrontMatter.date;
+	post.title = yamlFrontMatter.title || parsePostFilename(post).title;
+	post.date =  yamlFrontMatter.date || parsePostFilename(post).date;
 	post.body = matches && /*marked(*/matches[2].trim()/*)*/;
 
 	return post;
