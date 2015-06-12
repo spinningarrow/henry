@@ -2,6 +2,8 @@ var React = require('react');
 
 var PostEditor = React.createClass({
 	render: function () {
+		if (!this.props.post) return <div id="post-editor">Nothing to display.</div>;
+
 		return (
 			<div id="post-editor">
 				<form className="text-editor-form">
