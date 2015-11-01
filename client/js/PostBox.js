@@ -7,7 +7,7 @@ var yaml = require('js-yaml');
 var marked = require('marked');
 
 var ACCESS_TOKEN = '';
-var url = 'https://api.github.com/repos/spinningarrow/spinningarrow.github.io/contents/_posts?access_token=' + ACCESS_TOKEN;
+var url = 'https://api.github.com/repos/spinningarrow/henry-test/contents/_posts?access_token=' + ACCESS_TOKEN;
 
 var decodePostContent = function (post) {
 	// atob: to convert Base64 to human-readable stuff
