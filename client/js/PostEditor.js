@@ -1,25 +1,23 @@
-var React = require('react');
+let React = require('react');
 
-var PostEditor = React.createClass({
-	render: function () {
-		return (
-			<div id="post-editor">
-				<form className="text-editor-form">
-					<input type="text"
-						className="text-editor-title"
-						placeholder="Title"
-						value={this.props.post && this.props.post.title}
-						onChange={this.props.handleTitleChanged}/>
-					<textarea className="text-editor"
-						value={this.props.post && this.props.post.body}
-						onChange={this.props.handleBodyChanged}></textarea>
-					<div>
-						<button type="submit">Publish</button>
-					</div>
-				</form>
-			</div>
-		);
-	}
-});
+function PostEditor(props) {
+	return (
+		<div id="post-editor">
+			<form className="text-editor-form">
+				<input type="text"
+					className="text-editor-title"
+					placeholder="Title"
+					value={props.post && props.post.title}
+					onChange={props.handleTitleChanged}/>
+				<textarea className="text-editor"
+					value={props.post && props.post.body}
+					onChange={props.handleBodyChanged}></textarea>
+				<div>
+					<button type="submit">Publish</button>
+				</div>
+			</form>
+		</div>
+	);
+}
 
 module.exports = PostEditor;
