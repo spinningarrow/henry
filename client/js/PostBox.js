@@ -1,15 +1,15 @@
-var React = require('react');
-var Post = require('./Post');
-var PostList = require('./PostList');
-var PostEditor = require('./PostEditor');
-var qwest = require('qwest');
-var yaml = require('js-yaml');
-var marked = require('marked');
+let React = require('react');
+let Post = require('./Post');
+let PostList = require('./PostList');
+let PostEditor = require('./PostEditor');
+let qwest = require('qwest');
+let yaml = require('js-yaml');
+let marked = require('marked');
 
-var ACCESS_TOKEN = '';
-var url = 'https://api.github.com/repos/spinningarrow/henry-test/contents/_posts?access_token=' + ACCESS_TOKEN;
+let ACCESS_TOKEN = '';
+let url = 'https://api.github.com/repos/spinningarrow/henry-test/contents/_posts?access_token=' + ACCESS_TOKEN;
 
-var decodePostContent = function (post) {
+let decodePostContent = function (post) {
 	// atob: to convert Base64 to human-readable stuff
 	// escape + decodeURIComponent: for getting the UTF-8 characters right
 	post.content = decodeURIComponent(escape(atob(post.content)));
@@ -17,8 +17,8 @@ var decodePostContent = function (post) {
 	return post;
 };
 
-var parsePostFilename = function (post) {
-	var matches = post.name.match(/(\d{4}-\d{2}-\d{2})-(.+)\.m\w+/);
+let parsePostFilename = function (post) {
+	let matches = post.name.match(/(\d{4}-\d{2}-\d{2})-(.+)\.m\w+/);
 
 	return {
 		date: matches[1] && new Date(matches[1]),
@@ -28,9 +28,9 @@ var parsePostFilename = function (post) {
 	}
 };
 
-var parsePostContent = function (post) {
-	var matches = post.content.match(/---((?:\n|.)+)---((?:\n|.)+)/);
-	var yamlFrontMatter = matches && yaml.safeLoad(matches[1].trim());
+let parsePostContent = function (post) {
+	let matches = post.content.match(/---((?:\n|.)+)---((?:\n|.)+)/);
+	let yamlFrontMatter = matches && yaml.safeLoad(matches[1].trim());
 
 	post.title = yamlFrontMatter.title || parsePostFilename(post).title;
 	post.date =  yamlFrontMatter.date || parsePostFilename(post).date;
@@ -41,7 +41,7 @@ var parsePostContent = function (post) {
 
 // Gets the content for the provided list of (shallow) post objects
 // Returns a list of promises for this operation
-var fetchPostContent = function (posts) {
+let fetchPostContent = function (posts) {
 	return posts.map(function (post) {
 		return qwest.get(post.url + '&access_token=' + ACCESS_TOKEN)
 			.then(JSON.parse)
@@ -53,31 +53,29 @@ var fetchPostContent = function (posts) {
 // Takes in a list of all posts (shallow/full)
 // Returns a list of posts which have content
 // List returned increases in size with every request until all posts have been fetched
-var batchRequests = function (posts, startIndex, batchSize) {
+let batchRequests = function (posts, startIndex, batchSize) {
 	batchSize = batchSize || 5;
 	startIndex = startIndex || 0;
 
 	// simple case, start from beginning and fetch <batchSize> number of posts
-	var postsToFetch = posts.slice(startIndex, startIndex + batchSize);
+	let postsToFetch = posts.slice(startIndex, startIndex + batchSize);
 	return fetchPostContent(postsToFetch);
 };
 
-var hasReachedBottom = function (element) {
+let hasReachedBottom = function (element) {
 	return element.scrollTop + element.offsetHeight >= element.scrollHeight;
 };
 
-var PostBox = React.createClass({
+let PostBox = React.createClass({
 	postsBatchSize: 15,
 
-	getShallowPosts: function () {
+	getShallowPosts() {
 		return qwest.get(url)
 			.then(JSON.parse)
-			.then(function (posts) {
-				this._posts = posts.reverse();
-			}.bind(this));
+			.then(posts => this._posts = posts.reverse());
 	},
 
-	getFullPosts: function () {
+	getFullPosts() {
 		this.postsFetched = this.postsFetched || 0;
 
 		if (this.postsFetched >= this._posts.length) return;
@@ -86,18 +84,16 @@ var PostBox = React.createClass({
 			this.postsBatchSize = this._posts.length - this.postsFetched;
 		}
 
-		var contentPromises = batchRequests(this._posts, this.postsFetched, this.postsBatchSize);
+		let contentPromises = batchRequests(this._posts, this.postsFetched, this.postsBatchSize);
 
-		contentPromises.map(function (contentPromise, index) {
-			contentPromise.then(this.updateData);
-		}.bind(this));
+		contentPromises.forEach(contentPromise => contentPromise.then(this.updateData));
 
 		this.postsFetched += this.postsBatchSize;
 	},
 
-	updateData: function (post) {
-		var data = this.state.data;
-		var foundIndex;
+	updateData(post) {
+		let data = this.state.data;
+		let foundIndex;
 
 		this._posts.some(function (p, index) {
 			return foundIndex = index, p.name === post.name;
@@ -110,8 +106,8 @@ var PostBox = React.createClass({
 		});
 	},
 
-	generateSamplePosts: function () {
-		var count = 0;
+	generateSamplePosts() {
+		let count = 0;
 
 		return Array.apply(null, Array(this.postsBatchSize)).map(function () {
 			return {
@@ -124,12 +120,12 @@ var PostBox = React.createClass({
 		});
 	},
 
-	handleScroll: function (event) {
+	handleScroll(event) {
 		if (hasReachedBottom(event.target)
 				&& this._posts
 				&& this.postsFetched < this._posts.length) {
 			console.log('Bottom reached!');
-			var data = this.state.data;
+			let data = this.state.data;
 
 			this.setState({
 				data: data.concat(this.generateSamplePosts())
@@ -139,8 +135,8 @@ var PostBox = React.createClass({
 		}
 	},
 
-	handlePostClicked: function (post, event) {
-		var foundPost = null;
+	handlePostClicked(post, event) {
+		let foundPost = null;
 		this.state.data.some(function (p) {
 			return foundPost = p, p.name === post.name;
 		});
@@ -152,8 +148,8 @@ var PostBox = React.createClass({
 		});
 	},
 
-	handleTitleChanged: function (event) {
-		var selectedPost = this.state.selectedPost;
+	handleTitleChanged(event) {
+		let selectedPost = this.state.selectedPost;
 		selectedPost.title = event.target.value;
 
 		this.setState({
@@ -161,8 +157,8 @@ var PostBox = React.createClass({
 		});
 	},
 
-	handleBodyChanged: function (event) {
-		var selectedPost = this.state.selectedPost;
+	handleBodyChanged(event) {
+		let selectedPost = this.state.selectedPost;
 		selectedPost.body = event.target.value;
 
 		this.setState({
@@ -170,20 +166,20 @@ var PostBox = React.createClass({
 		});
 	},
 
-	getInitialState: function () {
+	getInitialState() {
 		return {
 			data: this.generateSamplePosts()
 		};
 	},
 
 	componentDidMount: function () {
-		this.getShallowPosts().then(function () {
+		this.getShallowPosts().then(() => {
 			this.getFullPosts();
 			setTimeout(this.getFullPosts, 5000);
-		}.bind(this));
+		});
 	},
 
-	render: function () {
+	render() {
 		// hax
 		// document.querySelector('aside').addEventListener('scroll', this.handleScroll);
 		return (
