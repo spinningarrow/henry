@@ -1,16 +1,14 @@
-var React = require('react');
-var moment = require('moment');
+let React = require('react');
+let moment = require('moment');
 
 // Usage: <Post title={title} date={date}/>
-var Post = React.createClass({
-	render: function () {
-		return (
-			<div className="post">
-				<h2>{this.props.title}</h2>
-				<span className="meta"><time>{moment(this.props.date).fromNow()}</time></span>
-			</div>
-		);
-	}
-});
+function Post(props) {
+	return (
+		<div className="post">
+			<h2>{props.title}</h2>
+			<span className="meta"><time>{moment(props.date).fromNow()}</time></span>
+		</div>
+	);
+}
 
 module.exports = Post;
