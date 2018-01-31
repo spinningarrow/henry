@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<title>The Spinning Arrow</title>
+		<meta name="author" content="Sahil Bajaj">
+		<meta name="description" content="Not all those who wander are lost. A blog by Sahil Bajaj.">
+		<meta name="viewport" content="initial-scale=1">
+
+		<!-- Adobe Edge Web Fonts -->
+		<script src="//use.edgefonts.net/m-1m:n2,n4,n7.js"></script>
+		<script src="//use.edgefonts.net/league-gothic.js"></script>
+
+		<!-- Favicon -->
+		<link href="/assets/img/favicon.png" rel="icon" type="image/png">
+
+		<!-- Feed -->
+		<link href="http://feeds.feedburner.com/sahil" rel="alternate" title="The Spinning Arrow" type="application/atom+xml">
+
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="/assets/css/normalize.css">
+		<link rel="stylesheet" href="/assets/css/highlight.css">
+		<link rel="stylesheet" href="/assets/css/main.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js/dist/zoom.css">
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.css">
+
+		<style>
+			.CodeMirror {
+				font-family: menlo, monospace;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="site-header">
+			<h1>
+				<a href="/">The Spinning Arrow</a>
+			</h1>
+
+			<p class="description">Not all those who wander are lost.</p>
+
+			<nav>
+				<ul>
+					<li>
+						<form action="https://www.google.com/search">
+							<input type="hidden" name="as_sitesearch" value="blog.sahil.me">
+							<input type="search" name="q" placeholder="Search">
+						</form>
+					</li>
+					<li>
+						<a href="/archives/">Archives</a>
+					</li>
+					<li>
+						<a href="/colophon/">Colophon</a>
+					</li>
+					<li>
+						<a href="http://feeds.feedburner.com/sahil" class="external">Feed</a>
+					</li>
+					<li>
+						<a href="http://feedburner.google.com/fb/a/mailverify?uri=sahil&loc=en_US" class="external">Subscribe by email</a>
+					</li>
+					<li>
+						<a href="http://sahil.me" class="external">sahil.me</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Start main content -->
+		<div class="content-main">
+			<article></article>
+		</div>
+		<!-- End main content -->
+
+		<footer class="site-footer">☁︎</footer>
+
+		<script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js/dist/zoom-vanilla.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/codemirror.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/mode/markdown/markdown.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/keymap/vim.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.34.0/addon/wrap/hardwrap.js"></script>
+		<script>
+			const editor = CodeMirror(document.querySelector('article'), {
+				autofocus: true,
+				keyMap: 'vim',
+				mode: 'markdown',
+				lineWrapping: true,
+			})
+		</script>
+	</body>
+</html>
